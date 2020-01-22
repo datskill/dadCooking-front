@@ -1,0 +1,21 @@
+<div class="container position-formulaire">
+    <div class="row">
+        <div class="col"><span class="styled-title">Ajouter un ingrédient</span></div>
+    </div>
+    <div class="row space-on-title">
+        <div class="col">
+            <form [formGroup]="addForm" (ngSubmit)="onSubmit()">
+                <div class="form-group">
+                    <label for="name">
+                        Nom de l'ingrédient
+                    </label>
+                    <input required class="form-control" id="name" type="text" formControlName="name"
+                        placeholder="e.g :Tomate">
+                </div>
+                <button [disabled]="!addForm.valid" class="btn btn-primary btn-style" type="submit">Ajouter
+                    l'ingrédient</button>
+                <p class="styled-p" *ngIf="isSubmitted">Ingrédient ajouté !</p>
+            </form>
+        </div>
+    </div>
+</div>

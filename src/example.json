@@ -1,0 +1,20 @@
+{
+    "Recette": {
+        "Nom": "Poulet au cury",
+        "Preparation": "Caresser le poulet",
+        "Ingredients": [
+            [
+                "Tomate",
+                "20"
+            ],
+            [
+                "Poivrons",
+                "1"
+            ],
+            [
+                "Poulet",
+                "Au moins 1"
+            ]
+        ]
+    }
+}

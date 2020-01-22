@@ -1,0 +1,3 @@
+export class Ingredient {
+    type: String // Tomate ...
+}
