@@ -15,16 +15,13 @@ export class FormulaireIngredientComponent implements OnInit {
     name: new FormControl('', Validators.required),
   })
   newIngredient = new Ingredient();
-  isSubmitted: boolean = false;
   constructor(private _snackBar: MatSnackBar) { }
 
-  ngOnInit() {
-  }
+  ngOnInit() { }
 
   onSubmit() {
     this.newIngredient = this.addForm.value;
     this.addForm.reset();
-    this.isSubmitted = true;
   }
 
 }

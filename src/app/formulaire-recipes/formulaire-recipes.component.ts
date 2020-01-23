@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormControl } from '@angular/forms';
 import { Recette } from '../models/recette';
 import { Ingredient } from '../models/ingredient';
+import { GRAMME, LITRE, KILO, MILLILITRE, CENTILITRE, NONE } from '../enum/unite';
 
 @Component({
   selector: 'app-formulaire-recipes',
@@ -13,14 +14,16 @@ export class FormulaireRecipesComponent implements OnInit {
     name: new FormControl(''),
     preparation: new FormControl(''),
     ingredients: new FormControl(''),
+    quantite: new FormControl(''),
+    unite: new FormControl(''),
   })
+
   newRecipe = new Recette();
   listIngredient = new Array<Ingredient>();
-
+  unite_tab = [GRAMME, LITRE, KILO, MILLILITRE, CENTILITRE, NONE];
   constructor(private formBuilder: FormBuilder) { }
 
   ngOnInit() {
-
   }
 
   onSubmit() {
@@ -29,5 +32,6 @@ export class FormulaireRecipesComponent implements OnInit {
     console.log(this.newRecipe);
     this.addForm.reset();
   }
+
 
 }
