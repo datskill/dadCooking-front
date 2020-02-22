@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-
+import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
@@ -9,6 +9,7 @@ import { MaterialModule } from './material-module/material-module.module';
 import { FormulaireRecipesComponent } from './formulaire-recipes/formulaire-recipes.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FormulaireIngredientComponent } from './formulaire-ingredient/formulaire-ingredient.component';
+import { Recette } from './models/recette';
 
 
 @NgModule({
@@ -17,9 +18,12 @@ import { FormulaireIngredientComponent } from './formulaire-ingredient/formulair
     TableCooking,
     FormulaireRecipesComponent,
     FormulaireRecipesComponent,
-    FormulaireIngredientComponent,
+    FormulaireIngredientComponent
+    
+
   ],
   imports: [
+    HttpClientModule,
     BrowserModule,
     AppRoutingModule,
     NoopAnimationsModule,
@@ -27,7 +31,8 @@ import { FormulaireIngredientComponent } from './formulaire-ingredient/formulair
     FormsModule,
     ReactiveFormsModule,
   ],
-  providers: [],
+  entryComponents: [],
+  providers: [Recette],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

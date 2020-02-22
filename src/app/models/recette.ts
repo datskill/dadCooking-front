@@ -1,6 +1,6 @@
-import { Ingredient } from "./ingredient";
 export class Recette {
-    Nom: String;
-    Preparation: String;
-    Ingredients: String;
+    id: number;
+    nom: string;
+    preparation: string;
+    ingredients: string;
 }

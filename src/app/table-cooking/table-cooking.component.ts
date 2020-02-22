@@ -1,74 +1,86 @@
-import { SelectionModel } from '@angular/cdk/collections';
-import { Component } from '@angular/core';
-import { MatTableDataSource } from '@angular/material/table';
+import { Component, ViewChild } from '@angular/core';
+import { MatTableDataSource, MatPaginator, MatSort } from '@angular/material';
 import { Recette } from '../models/recette';
-import * as PDFDocument from 'pdfkit';
-import * as fs from "fs";
+import { RecetteService } from '../../api/recette.service';
+import { SelectionModel } from '@angular/cdk/collections';
+import { pdfCreator } from 'src/api/pdf-creator-service';
 
 
-export interface PeriodicElement {
-  name: string;
-  position: number;
-  weight: number;
-  symbol: string;
-}
-
-const ELEMENT_DATA: PeriodicElement[] = [
-  { position: 1, name: 'Hydrogen', weight: 1.0079, symbol: 'H' },
-  { position: 2, name: 'Helium', weight: 4.0026, symbol: 'He' },
-  { position: 3, name: 'Lithium', weight: 6.941, symbol: 'Li' },
-  { position: 4, name: 'Beryllium', weight: 9.0122, symbol: 'Be' },
-  { position: 5, name: 'Boron', weight: 10.811, symbol: 'B' },
-  { position: 6, name: 'Carbon', weight: 12.0107, symbol: 'C' },
-  { position: 7, name: 'Nitrogen', weight: 14.0067, symbol: 'N' },
-  { position: 8, name: 'Oxygen', weight: 15.9994, symbol: 'O' },
-  { position: 9, name: 'Fluorine', weight: 18.9984, symbol: 'F' },
-  { position: 10, name: 'Neon', weight: 20.1797, symbol: 'Ne' },
-];
-
-/**
- * @title Table with selection
- */
 @Component({
   selector: 'app-table-cooking',
   styleUrls: ['table-cooking.component.sass'],
   templateUrl: 'table-cooking.component.html',
 })
+
 export class TableCooking {
-  displayedColumns: string[] = ['select', 'position', 'name', 'weight', 'symbol'];
-  dataSource = new MatTableDataSource<PeriodicElement>(ELEMENT_DATA);
-  selection = new SelectionModel<PeriodicElement>(true, []);
+  displayedColumns: string[] = ['select', 'id', 'name', 'preparation', 'ingredients', 'delete'];
+  dataSource = new MatTableDataSource<Recette>();
+  RecetteListe = Array<Recette>();
+  selection = new SelectionModel<Recette>(true, []);
+  ingredientsSum: number;
+  arrayOfid = [];
+
+  constructor(private recetteService: RecetteService, private pdfCreatorService: pdfCreator) { }
 
   ngOnInit() {
-    this.getData();
-    this.createPdf();
+    this.recetteService.getAllRecipes().subscribe(data => {
+      this.RecetteListe = data;
+      this.setupDataSource(this.RecetteListe);
+      console.log('recette API GET ALL', data)
+    });
   }
 
-  /** Whether the number of selected elements matches the total number of rows. */
+  reloadData() {
+    this.recetteService.getAllRecipes().subscribe(data => {
+      this.RecetteListe = data;
+      this.setupDataSource(this.RecetteListe);
+      console.log('recette API GET ALL', data)
+    });
+  }
+
+  setupDataSource(RecetteListe: Recette[]) {
+    this.dataSource = new MatTableDataSource(RecetteListe);
+  }
+
+  generatePdf() {
+    this.selection.selected.forEach(data => { this.arrayOfid.push(data.id) });
+    this.pdfCreatorService.PostPdfParameters(this.arrayOfid).subscribe(data => {
+      console.log(data);
+    });
+  }
+
   isAllSelected() {
     const numSelected = this.selection.selected.length;
     const numRows = this.dataSource.data.length;
     return numSelected === numRows;
+
   }
 
-  /** Selects all rows if they are not all selected; otherwise clear selection. */
+  // deleteRecipe(recipeId: number) {
+  //   recipeId = this.selection.selected.values[0];
+  //   console.log('recipeID', recipeId);
+  //   // this.recetteService.deleteRecipe(recipeId).subscribe(res => {
+  //   //   this.reloadData();
+  //   // })
+  // }
+
+  GetPdf(url: string) {
+    const win = window.open(url, '_blank');
+    win.focus();
+  }
+
+
   masterToggle() {
     this.isAllSelected() ?
       this.selection.clear() :
       this.dataSource.data.forEach(row => this.selection.select(row));
   }
 
-  /** The label for the checkbox on the passed row */
-  checkboxLabel(row?: PeriodicElement): string {
+
+  checkboxLabel(row?: Recette) {
     if (!row) {
       return `${this.isAllSelected() ? 'select' : 'deselect'} all`;
     }
-    return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.position + 1}`;
-  }
-  getData() {
-    let obj: Recette = JSON.parse('{"Nom": "Poulet au cury", "Preparation": "Caresser le poulet", "Ingredients": [ ["Tomate", "20" ],[ "Poivrons","1"],["Poulet","Au moins 1" ]]}');
-    console.log(obj);
-  }
-  createPdf() {
+    return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.id + 1}`;
   }
 }

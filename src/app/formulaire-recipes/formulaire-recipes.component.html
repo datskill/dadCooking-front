@@ -1,52 +1,75 @@
-<div class="container position-formulaire">
-    <div class="row">
-        <div class="col"><span class="styled-title">Ajouter une nouvelle recette</span></div>
-    </div>
-    <div class="row">
-        <div class="col">
-            <form [formGroup]="addForm" (ngSubmit)="onSubmit()">
+<mat-grid-list cols="3" rowHeight="1:1">
+    <mat-grid-tile>
+        <div>
+            <form [formGroup]="addIngredient" (ngSubmit)="postIngredients()">
+                <mat-label>Ajouter un ingrédient</mat-label>
                 <div class="form-group">
-                    <label for="name">
-                        Nom de la recette
-                    </label>
-                    <input class="form-control" id="name" type="text" formControlName="name">
-                </div>
-                <div class="form-group">
-                    <label for="preparation">
-                        Préparation de la recette
-                    </label>
-                    <textarea class="form-control" id="prepration" type="text" formControlName="preparation"></textarea>
-                </div>
-                <div class="row">
-                    <div class="col-4 form-group">
-                        <label for="ingredients">Ingrédient</label>
-                        <input class="form-control" id="ingredients" type="text" formControlName="ingredients"
-                            placeholder="eg: Farine">
-                    </div>
-                    <div class="col-4 form-group">
-                        <label for="quantite">Quantite</label>
-                        <input class="form-control" id="quantite" type="text" formControlName="quantite"
-                            placeholder="eg: 100">
-                    </div>
-                    <div class="col-4 form-group">
-                        <label for="unite">Unité</label>
-                        <select class="form-control" id="unite" formControlName="unite">
-                            <option value="gramme" selected>Gramme</option>
-                            <option value="kilo">Kilo</option>
-                            <option value="litre">Litre</option>
-                            <option value="centilitre">Centilitre</option>
-                            <option value="millilitre">Millilitre</option>
-                            <option value="aucun">Aucun</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="row" id="row1">
-                    <button class="btn btn-primary btn-style col" type="button" (click)="addLine()">Ajouter un
-                        ingrédient<span class="fas fa-plus styled-image"></span></button>
+
+                    <mat-form-field>
+                        <mat-select id="foodId" formControlName="foodId">
+                            <mat-option *ngFor="let food of listFood" [value]="food.name && food.id">
+                                {{food.name}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
                 </div>
 
-                <button class="btn btn-primary btn-style" type="submit">Créer la recette</button>
+                <div class="form-group">
+                    <mat-form-field>
+                        <mat-label>Quantité</mat-label>
+                        <input matInput placeholder="Ex. 100" class="form-control" id="quantite" type="text"
+                            formControlName="quantite">
+                    </mat-form-field>
+                </div>
+
+                <div class="form-group">
+                    <mat-form-field>
+                        <mat-label>Unité</mat-label>
+                        <input matInput placeholder="Ex. g" class="form-control" id="unite" type="text"
+                            formControlName="unite">
+                    </mat-form-field>
+                </div>
+
+                <button mat-raised-button color="primary" type="submit">Ajouter
+                    l'ingrédient</button>
             </form>
         </div>
-    </div>
-</div>
+
+    </mat-grid-tile>
+
+    <mat-grid-tile>
+        <div>
+            <span>Liste des ingrédients sélectionnés:</span>
+            <mat-list role="list">
+                <mat-list-item *ngFor="let i of SelectedIngredients">
+                    <mat-card>{{i.name}} - {{i.quantite}} {{i.unite}}</mat-card>
+                </mat-list-item>
+            </mat-list>
+        </div>
+    </mat-grid-tile>
+    <mat-grid-tile>
+        <div>
+            <!-- <div><b>Ajouter une nouvelle recette</b></div> -->
+            <form [formGroup]="addForm" (ngSubmit)="postRecipe()" class="example-form">
+                <div class="form-group">
+                    <mat-form-field>
+                        <mat-label>Nom de la recette</mat-label>
+                        <input matInput placeholder="Ex. Pizza chèvre miel" class="form-control" id="name" type="text"
+                            formControlName="name">
+                    </mat-form-field>
+                </div>
+                <div class="form-group">
+                    <mat-form-field [style.fontSize]="10">
+                        <mat-label>Préparation de la recette</mat-label>
+                        <textarea matInput cdkTextareaAutosize #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="1"
+                            cdkAutosizeMaxRows="10" class="form-control" id="prepration" type="text"
+                            formControlName="preparation"
+                            placeholder="Ex. mélanger les oeufs et la farine..."></textarea>
+                    </mat-form-field>
+                </div>
+
+                <button mat-raised-button color="primary" type="submit">Créer la recette</button>
+            </form>
+        </div>
+    </mat-grid-tile>
+</mat-grid-list>

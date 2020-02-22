@@ -1,3 +1,10 @@
+import { Food } from './food';
+
 export class Ingredient {
-    type: String // Tomate ...
+   foodId: number;
+   id: number;
+   foodName: string;
+   unite: string;
+   food: Food;
+   quantite: number;
 }
