@@ -42,6 +42,7 @@ export class FormulaireIngredientComponent implements OnInit {
     });
 
   }
+  // AfterInit
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator
   }
