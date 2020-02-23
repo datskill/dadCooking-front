@@ -1,20 +1,46 @@
-<div class="container position-formulaire">
-    <div class="row">
-        <div class="col"><span class="styled-title">Ajouter un ingrédient</span></div>
-    </div>
-    <div class="row space-on-title">
-        <div class="col">
-            <form [formGroup]="addForm" (ngSubmit)="onSubmit()">
-                <div class="form-group">
-                    <label for="name">
-                        Nom de l'ingrédient
-                    </label>
-                    <input required class="form-control" id="name" type="text" formControlName="name"
+<mat-grid-list cols="2">
+    <mat-grid-tile>
+        <mat-card>
+            <form [formGroup]="addForm" (ngSubmit)="OnSubmit()">
+                <label for="name">
+                    <b>Nom de l'ingrédient</b>
+                </label>
+                <mat-form-field>
+                    <input matInput required class="form-control" id="name" type="text" formControlName="name"
                         placeholder="e.g :Tomate">
-                </div>
-                <button [disabled]="!addForm.valid" class="btn btn-primary btn-style" type="submit">Ajouter
+                </mat-form-field>
+                <button mat-raised-button color="primary" [disabled]="!addForm.valid" type="submit">Ajouter
                     l'ingrédient</button>
             </form>
+        </mat-card>
+    </mat-grid-tile>
+    <mat-grid-tile>
+        <div>
+            <mat-form-field>
+                <mat-label>Filter</mat-label>
+                <input matInput (keyup)="applyFilter($event)" placeholder="Ex. Mia">
+            </mat-form-field>
+            <table mat-table [dataSource]="dataSource">
+
+                <ng-container matColumnDef="name">
+                    <th class="ingTable" mat-header-cell *matHeaderCellDef> Name </th>
+                    <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="delete">
+                    <th mat-header-cell *matHeaderCellDef> Supprimer </th>
+                    <td mat-cell *matCellDef="let element"> <button mat-raised-button color="primary"
+                            (click)="delete(element.id)">
+                            <mat-icon>delete_outline</mat-icon>
+                        </button> </td>
+                </ng-container>
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;">
+                </tr>
+            </table>
+            <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]">
+            </mat-paginator>
+
         </div>
-    </div>
-</div>
+    </mat-grid-tile>
+</mat-grid-list>
