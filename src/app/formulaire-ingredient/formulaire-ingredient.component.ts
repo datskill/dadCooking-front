@@ -34,7 +34,7 @@ export class FormulaireIngredientComponent implements OnInit {
       'delete',
       sanitizer.bypassSecurityTrustResourceUrl('assets/delete-24px.svg'));
   }
-
+  // OnInit
   ngOnInit() {
     this.foodService.getAllFood().subscribe(data => {
       this.FoodListe = data;
@@ -42,6 +42,7 @@ export class FormulaireIngredientComponent implements OnInit {
     });
 
   }
+  // AfterInit
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator
   }
